@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../model/user");
 
 const handleSignup = async (req, res) => {
@@ -19,18 +20,22 @@ const handleSignup = async (req, res) => {
     if (user) {
       return res.status(409).json({ message: "This user already exists." });
     } else {
-      const user = await User({
+      const user = await User.create({
         phoneNo: phoneNo,
         username: username,
         password: hashPassword,
       });
 
-      await user.save();
-      res.status(201).json({ message: "User successfully created!" });
+      const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+        expiresIn: "1h",
+      });
+
+      res.status(201).json({ message: "User successfully created!", token });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server error!, could not connect" });
+    res
+      .status(500)
+      .json({ message: "Server error!, could not connect", error });
   }
 };
 

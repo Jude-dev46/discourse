@@ -1,19 +1,31 @@
+const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const verifyJWT = (err, req, res, next) => {
-  const authHeader = req.header["authorization"];
-  console.log(authHeader);
+const User = require("../model/user");
 
+const verifyJWT = async (err, req, res, next) => {
+  const authHeader = req.header.authorization;
   if (!authHeader) return res.sendStatus(401);
 
   const token = authHeader.split(" ")[1];
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-    if (err) return res.sendStatus(403);
+  if (!token)
+    return res
+      .status(401)
+      .json({ status: false, message: "This token is invalid!" });
 
-    req.user = decoded.username;
-    next();
-  });
+  const decoded = await promisify(jwt.verify)(
+    token,
+    process.env.ACCESS_TOKEN_SECRET
+  );
+
+  const currentUser = await User.findById(decoded.id);
+  if (currentUser)
+    return res
+      .status(401)
+      .json({ status: false, message: "User does not exists anymore!" });
+
+  next();
 };
 
 module.exports = verifyJWT;

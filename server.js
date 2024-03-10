@@ -30,10 +30,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
 
-app.use(InitiateMongoServer());
+InitiateMongoServer();
 app.use("/auth/signUp", signupRoute);
 app.use("/auth/login", loginRoute);
-app.use("/refresh", refreshRoute);
+app.use("/auth/refresh", refreshRoute);
 
 app.use(verifyJWT);
 app.use("/registeredUsers", usersRoute);

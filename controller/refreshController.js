@@ -1,32 +1,25 @@
 const User = require("../model/user");
-const jwt = require("jsonwebtoken");
 
 const handleRefreshToken = async (req, res) => {
   try {
-    const refreshToken = req.body.refreshToken;
+    const { phoneNo } = req.body;
 
-    if (!refreshToken) return res.sendStatus(401);
+    const existingUser = await User.findOne({ phoneNo });
+    if (!existingUser)
+      return res
+        .status(404)
+        .json({ status: false, message: "User with this token not found!" });
 
-    const existingUser = await User.findOne({ refreshToken: refreshToken });
-    if (!existingUser) return res.sendStatus(403);
+    const refreshToken = existingUser.createResetPasswordToken();
+    await existingUser.save({ validateBeforeSave: false });
 
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err, decoded) => {
-      if (err || existingUser.username !== decoded.userId) {
-        return res.sendStatus(403);
-      }
+    // Using Expo sms to send the reset token to the user phoneNo for password reset
 
-      const accessToken = jwt.sign(
-        { userId: decoded.userId },
-        process.env.PRIVATE_KEY,
-        {
-          expiresIn: "1h",
-        }
-      );
-
-      res.json({ accessToken });
+    res.status(200).json({
+      status: true,
+      message: "Refreshtoken successfully sent to your email",
     });
   } catch (error) {
-    console.log(error);
     res.sendStatus(500);
   }
 };

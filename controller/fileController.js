@@ -25,7 +25,7 @@ const handleFileUpload = (req, res) => {
     res.status(400).json({ message: "No file sent!" });
   }
 
-  const fileUrl = `http://192.168.0.2:8000/uploads/${file.filename}`;
+  const fileUrl = `http://192.168.0.6:8000/uploads/${file.filename}`;
 
   res.json({ message: "File successfully saved!", data: fileUrl });
 };
