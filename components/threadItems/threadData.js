@@ -17,6 +17,9 @@ const ThreadData = ({ username, date, displayImg, image, text, timeStamp }) => {
     }
   }
 
+  const userImg = displayImg.data.find((img) => img.user === username);
+  console.log(userImg);
+
   return (
     <View style={styles.container}>
       {!displayImg && (
@@ -24,7 +27,7 @@ const ThreadData = ({ username, date, displayImg, image, text, timeStamp }) => {
           <IconButton icon="person" size={18} />
         </View>
       )}
-      {displayImg && <Image source={{ uri: displayImg }} style={styles.dp} />}
+      {displayImg && <Image source={{ uri: userImg.img }} style={styles.dp} />}
       <View>
         <Text style={styles.name}>{username}</Text>
         <View style={styles.dateItem}>

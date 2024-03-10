@@ -19,6 +19,15 @@ const AuthContent = ({ isLogin, onAuthenticate }) => {
           {isLogin ? "signUp" : "login"}
         </Link>
       </View>
+      <View style={[styles.textContainer, styles.text2Container]}>
+        <Text style={styles.text}>{isLogin && "Forgot Password? "}</Text>
+        <Link
+          href={!isLogin ? "/auth/login" : "/auth/signUp"}
+          style={styles.authText}
+        >
+          {isLogin && "Click here!"}
+        </Link>
+      </View>
     </View>
   );
 };
@@ -30,6 +39,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 12,
+  },
+  text2Container: {
+    marginTop: 6,
   },
   text: {
     fontFamily: "outfit-regular",

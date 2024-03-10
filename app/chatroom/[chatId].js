@@ -147,6 +147,7 @@ const ChatPage = () => {
       const foundToken = pushTokens.find(
         (tokenData) => tokenData.ownerId === currRegContact.username
       );
+
       setPushToken(foundToken?.token);
 
       return () => {

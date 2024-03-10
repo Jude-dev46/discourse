@@ -53,17 +53,17 @@ export default function Index() {
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const token = await AsyncStorage.getItem("token");
+  // useEffect(() => {
+  //   (async () => {
+  //     const token = await AsyncStorage.getItem("token");
 
-      if (!token) {
-        const token = await generateAccessToken();
-        console.log(token);
-        // AsyncStorage.setItem("token", token);
-      }
-    })();
-  }, []);
+  //     if (!token) {
+  //       const token = await generateAccessToken();
+  //       console.log(token);
+  //       // AsyncStorage.setItem("token", token);
+  //     }
+  //   })();
+  // }, []);
 
   if (!rootNavigationState?.key) return null;
 

@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { Stack } from "expo-router";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -80,7 +87,10 @@ const Settings = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={{ alignItems: "center" }}
+      style={styles.container}
+    >
       <Stack.Screen
         options={{
           headerStyle: { backgroundColor: Colors.primary700 },
@@ -139,7 +149,18 @@ const Settings = () => {
           </Text>
         </View>
       </View>
-    </View>
+      <Pressable style={({ pressed }) => pressed && styles.pressed}>
+        <View style={styles.nameCon}>
+          <IconButton icon="key" size={32} />
+          <View>
+            <Text style={styles.text}>Change Password</Text>
+            <Text style={styles.inlineText}>
+              Secure your data by constantly changing your password
+            </Text>
+          </View>
+        </View>
+      </Pressable>
+    </ScrollView>
   );
 };
 
@@ -148,7 +169,7 @@ export default Settings;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    // alignItems: "center",
     paddingTop: "5%",
   },
   person: {
@@ -176,6 +197,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 20,
-    marginTop: 32,
+    marginTop: 20,
+  },
+  pressed: {
+    opacity: 0.7,
   },
 });

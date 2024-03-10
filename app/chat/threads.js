@@ -11,7 +11,6 @@ import {
   Text,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Colors } from "../../constants/style";
@@ -67,11 +66,11 @@ const Threads = () => {
       );
 
       const displayImages = await fetchDisplayImages();
-      const foundImg = displayImages.data.find(
-        (img) => img.user === foundUser?.username
-      );
+      // const foundImg = displayImages.data.find(
+      //   (img) => img.user === foundUser?.username
+      // );
 
-      setDisplayImg(foundImg?.img);
+      setDisplayImg(displayImages);
 
       let contactNumbers = [];
 
@@ -89,7 +88,7 @@ const Threads = () => {
         setContactNo(contactNumbers);
       }
     })();
-  }, [contactNo]);
+  }, []);
 
   function openModalHandler() {
     setIsOpen(true);
